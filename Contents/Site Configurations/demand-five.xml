@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site site="http://www.channel5.com" plugin="http://c.brightcove.com/services/viewer/federated_f9.*" initialState="loading" version="1.0">
+			
+	<crop x="0" y="0" width="640" height="360" />
+
+	<seekbar type="thumb">
+		<start x="36" y="460" />
+		<end   x="442" y="460" />
+		<played>
+				<color rgb="a0919a" />
+				<!-- <color rgb="585858" />
+				<color rgb="484848" /> 
+				<color rgb="3f3f3f" />-->
+		</played>
+	</seekbar>
+	
+	<state name="loading">
+		<event>
+			<condition>
+				<url matches="five.cdn.auditude.com/.*/AuditudeAdUnit.swf" />
+			</condition>
+			<action>
+				<pause time="2000" />
+				<click x="320" y="180" />
+				<!-- Second click to hide player controls -->
+				<pause time="500" />
+				<click x="650" y="370" />
+				<goto state="playing" />
+			</action>
+		</event>
+	</state>
+	
+	<!-- PLAYING -->
+	<state name="playing">
+		<event>
+			<condition>
+				<command name="pause" />
+			</condition>
+			<action>
+				<!-- Dummy click to bring up controls -->
+				<click x="320" y="351" />
+				<click x="9" y="351" />
+				<goto state="paused" />
+			</action>  
+		</event>
+	</state>
+	
+	<state name="paused">
+		<event>
+			<condition>
+				<command name="play" />
+			</condition>
+			<action>
+				<click x="9" y="351" />
+				<click x="650" y="370" />
+				<goto state="playing" />
+			</action>
+		</event>
+	</state>
+</site>
