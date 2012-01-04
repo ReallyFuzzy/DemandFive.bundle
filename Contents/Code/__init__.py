@@ -80,26 +80,26 @@ def GetShowInfo(showId, showTitle):
 
 ####################################################################################################
 
-def GetEpisodes(showId, seasonId=None, seasonName=""):
+def GetEpisodes(showId, seasonParam=None, seasonName=""):
 
 	episodes = []
 	
 	url = SHOW_URL + showId + EPISODE_URL
-	if (not seasonId is None):
-		url = url + "?season=" + seasonId
+	if (not seasonParam is None):
+		url = url + "?" + seasonParam
 		
 	page = HTML.ElementFromURL(url)
 	data = page.xpath("//div[contains(@class,'previous_episodes_container')]//li[@class='clearfix']")
 	
-	if (seasonId is	None):
+	if (seasonParam is None):
 		if len(data) == 0:
 			data = HTML.ElementFromURL(SHOW_URL + showId).xpath("//li[@class='clearfix']")
 		else:
 			# Get a list of previous seasons and retrieve data for them.
 			seasons = page.xpath("//div[contains(@class,'previous_episodes_container')]/div[@class='group_container']//a")
 			for season in seasons:
-				seasonId = re.search("season=(\d*)",season.get('href')).group(1)
-				episodes.extend(GetEpisodes(showId, seasonId, season.text))
+				seasonParam = re.search("episodes\?([^=]*=[^&]*)",season.get('href')).group(1)
+				episodes.extend(GetEpisodes(showId, seasonParam, season.text))
 			
 
 	cnt = 0
